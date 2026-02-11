@@ -1,6 +1,7 @@
 "use client";
 
 import clsx from "clsx";
+import { useSubscriptionOptional } from "components/subscription/subscription-context";
 import { ProductOption, ProductVariant } from "lib/shopify/types";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -19,6 +20,7 @@ export function VariantSelector({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const subscription = useSubscriptionOptional();
   const hasNoOptionsOrJustOneOption =
     !options.length ||
     (options.length === 1 && options[0]?.values.length === 1);
@@ -43,6 +45,20 @@ export function VariantSelector({
     const params = new URLSearchParams(searchParams.toString());
     params.set(name, value);
     router.replace(`?${params.toString()}`, { scroll: false });
+
+    // Notify subscription SDK of variant change
+    const newParams: Record<string, string> = {};
+    params.forEach((v, k) => (newParams[k] = v));
+    const matchingVariant = combinations.find((combination) =>
+      Object.entries(newParams).every(
+        ([key, val]) =>
+          !options.find((o) => o.name.toLowerCase() === key) ||
+          combination[key] === val,
+      ),
+    );
+    if (matchingVariant) {
+      subscription?.notifyVariantChange(matchingVariant.id);
+    }
   };
 
   return options.map((option) => (

@@ -4,6 +4,7 @@ import { getCustomer } from "lib/shopify/customer";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { LogoutButton } from "./logout-button";
 
@@ -37,6 +38,16 @@ export default async function AccountPage() {
             </p>
           </div>
           <LogoutButton />
+        </div>
+
+        {/* Quick Links */}
+        <div className="mb-8">
+          <Link
+            href="/pages/joy-subscription"
+            className="inline-flex items-center gap-2 rounded-lg border border-blue-600 bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            My Subscriptions
+          </Link>
         </div>
 
         {/* Account Info */}

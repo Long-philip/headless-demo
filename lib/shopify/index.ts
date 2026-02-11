@@ -14,6 +14,7 @@ import { cookies, headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import {
   addToCartMutation,
+  cartDiscountCodesUpdateMutation,
   createCartMutation,
   editCartItemsMutation,
   removeFromCartMutation,
@@ -33,6 +34,7 @@ import {
 } from "./queries/product";
 import {
   Cart,
+  CartLineInput,
   Collection,
   Connection,
   Image,
@@ -41,6 +43,7 @@ import {
   Product,
   ShopifyAddToCartOperation,
   ShopifyCart,
+  ShopifyCartDiscountCodesUpdateOperation,
   ShopifyCartOperation,
   ShopifyCollection,
   ShopifyCollectionOperation,
@@ -226,7 +229,7 @@ export async function createCart(): Promise<Cart> {
 }
 
 export async function addToCart(
-  lines: { merchandiseId: string; quantity: number }[]
+  lines: CartLineInput[]
 ): Promise<Cart> {
   const cartId = (await cookies()).get("cartId")?.value!;
   const res = await shopifyFetch<ShopifyAddToCartOperation>({
@@ -237,6 +240,19 @@ export async function addToCart(
     },
   });
   return reshapeCart(res.body.data.cartLinesAdd.cart);
+}
+
+export async function updateCartDiscountCodes(
+  discountCodes: string[]
+): Promise<void> {
+  const cartId = (await cookies()).get("cartId")?.value!;
+  await shopifyFetch<ShopifyCartDiscountCodesUpdateOperation>({
+    query: cartDiscountCodesUpdateMutation,
+    variables: {
+      cartId,
+      discountCodes,
+    },
+  });
 }
 
 export async function removeFromCart(lineIds: string[]): Promise<Cart> {

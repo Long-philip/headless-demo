@@ -149,6 +149,13 @@ export type ShopifyCreateCartOperation = {
   data: { cartCreate: { cart: ShopifyCart } };
 };
 
+export type CartLineInput = {
+  merchandiseId: string;
+  quantity: number;
+  sellingPlanId?: string;
+  attributes?: { key: string; value: string }[];
+};
+
 export type ShopifyAddToCartOperation = {
   data: {
     cartLinesAdd: {
@@ -157,10 +164,20 @@ export type ShopifyAddToCartOperation = {
   };
   variables: {
     cartId: string;
-    lines: {
-      merchandiseId: string;
-      quantity: number;
-    }[];
+    lines: CartLineInput[];
+  };
+};
+
+export type ShopifyCartDiscountCodesUpdateOperation = {
+  data: {
+    cartDiscountCodesUpdate: {
+      cart: { id: string };
+      userErrors: { field: string[]; message: string }[];
+    };
+  };
+  variables: {
+    cartId: string;
+    discountCodes: string[];
   };
 };
 

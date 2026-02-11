@@ -14,14 +14,21 @@ import { redirect } from "next/navigation";
 
 export async function addItem(
   prevState: any,
-  selectedVariantId: string | undefined
+  payload: { variantId: string; sellingPlanId?: string } | string | undefined
 ) {
-  if (!selectedVariantId) {
+  const variantId = typeof payload === 'string' ? payload : payload?.variantId;
+  const sellingPlanId = typeof payload === 'string' ? undefined : payload?.sellingPlanId;
+
+  if (!variantId) {
     return "Error adding item to cart";
   }
 
   try {
-    await addToCart([{ merchandiseId: selectedVariantId, quantity: 1 }]);
+    await addToCart([{
+      merchandiseId: variantId,
+      quantity: 1,
+      ...(sellingPlanId && { sellingPlanId }),
+    }]);
     updateTag(TAGS.cart);
   } catch (e) {
     return "Error adding item to cart";

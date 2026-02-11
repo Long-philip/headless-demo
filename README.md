@@ -1,75 +1,310 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fcommerce&project-name=commerce&repo-name=commerce&demo-title=Next.js%20Commerce&demo-url=https%3A%2F%2Fdemo.vercel.store&demo-image=https%3A%2F%2Fbigcommerce-demo-asset-ksvtgfvnd.vercel.app%2Fbigcommerce.png&env=COMPANY_NAME,SHOPIFY_REVALIDATION_SECRET,SHOPIFY_STORE_DOMAIN,SHOPIFY_STOREFRONT_ACCESS_TOKEN,SITE_NAME)
+# joy-subscription-sdk
 
-# Next.js Commerce
+Headless SDK for integrating Joy Subscription with Shopify headless stores.
 
-A high-performance, server-rendered Next.js App Router ecommerce application.
+## Features
 
-This template uses React Server Components, Server Actions, `Suspense`, `useOptimistic`, and more.
+- Lightweight - SDK only ~2.3KB gzipped
+- Modular - Import only what you need
+- Auto script loading - SDK handles scripttag loading with deduplication
+- Event-driven - Listen for widget events (plan selection, variant change, etc.)
+- Framework agnostic - Works with React, Vue, Next.js, Hydrogen, etc.
 
-<h3 id="v1-note"></h3>
+## Installation
 
-> Note: Looking for Next.js Commerce v1? View the [code](https://github.com/vercel/commerce/tree/v1), [demo](https://commerce-v1.vercel.store), and [release notes](https://github.com/vercel/commerce/releases/tag/v1).
-
-## Providers
-
-Vercel will only be actively maintaining a Shopify version [as outlined in our vision and strategy for Next.js Commerce](https://github.com/vercel/commerce/pull/966).
-
-Vercel is happy to partner and work with any commerce provider to help them get a similar template up and running and listed below. Alternative providers should be able to fork this repository and swap out the `lib/shopify` file with their own implementation while leaving the rest of the template mostly unchanged.
-
-- Shopify (this repository)
-- [BigCommerce](https://github.com/bigcommerce/nextjs-commerce) ([Demo](https://next-commerce-v2.vercel.app/))
-- [Ecwid by Lightspeed](https://github.com/Ecwid/ecwid-nextjs-commerce/) ([Demo](https://ecwid-nextjs-commerce.vercel.app/))
-- [Geins](https://github.com/geins-io/vercel-nextjs-commerce) ([Demo](https://geins-nextjs-commerce-starter.vercel.app/))
-- [Medusa](https://github.com/medusajs/vercel-commerce) ([Demo](https://medusa-nextjs-commerce.vercel.app/))
-- [Prodigy Commerce](https://github.com/prodigycommerce/nextjs-commerce) ([Demo](https://prodigy-nextjs-commerce.vercel.app/))
-- [Saleor](https://github.com/saleor/nextjs-commerce) ([Demo](https://saleor-commerce.vercel.app/))
-- [Shopware](https://github.com/shopwareLabs/vercel-commerce) ([Demo](https://shopware-vercel-commerce-react.vercel.app/))
-- [Swell](https://github.com/swellstores/verswell-commerce) ([Demo](https://verswell-commerce.vercel.app/))
-- [Umbraco](https://github.com/umbraco/Umbraco.VercelCommerce.Demo) ([Demo](https://vercel-commerce-demo.umbraco.com/))
-- [Wix](https://github.com/wix/headless-templates/tree/main/nextjs/commerce) ([Demo](https://wix-nextjs-commerce.vercel.app/))
-- [Fourthwall](https://github.com/FourthwallHQ/vercel-commerce) ([Demo](https://vercel-storefront.fourthwall.app/))
-
-> Note: Providers, if you are looking to use similar products for your demo, you can [download these assets](https://drive.google.com/file/d/1q_bKerjrwZgHwCw0ovfUMW6He9VtepO_/view?usp=sharing).
-
-## Integrations
-
-Integrations enable upgraded or additional functionality for Next.js Commerce
-
-- [Orama](https://github.com/oramasearch/nextjs-commerce) ([Demo](https://vercel-commerce.oramasearch.com/))
-
-  - Upgrades search to include typeahead with dynamic re-rendering, vector-based similarity search, and JS-based configuration.
-  - Search runs entirely in the browser for smaller catalogs or on a CDN for larger.
-
-- [React Bricks](https://github.com/ReactBricks/nextjs-commerce-rb) ([Demo](https://nextjs-commerce.reactbricks.com/))
-  - Edit pages, product details, and footer content visually using [React Bricks](https://www.reactbricks.com) visual headless CMS.
-
-## Running locally
-
-You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js Commerce. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/concepts/projects/environment-variables) for this, but a `.env` file is all that is necessary.
-
-> Note: You should not commit your `.env` file or it will expose secrets that will allow others to control your Shopify store.
-
-1. Install Vercel CLI: `npm i -g vercel`
-2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
-3. Download your environment variables: `vercel env pull`
+### Option A: NPM (React, Vue, Next.js, Hydrogen)
 
 ```bash
-pnpm install
-pnpm dev
+npm install joy-subscription-sdk
 ```
 
-Your app should now be running on [localhost:3000](http://localhost:3000/).
+```javascript
+import {WidgetSDK} from 'joy-subscription-sdk/widget';
 
-<details>
-  <summary>Expand if you work at Vercel and want to run locally and / or contribute</summary>
+const sdk = new WidgetSDK({
+  shopDomain: 'your-store.myshopify.com',
+  storefrontAccessToken: 'your-storefront-access-token'
+});
 
-1. Run `vc link`.
-1. Select the `Vercel Solutions` scope.
-1. Connect to the existing `commerce-shopify` project.
-1. Run `vc env pull` to get environment variables.
-1. Run `pnpm dev` to ensure everything is working correctly.
-</details>
+await sdk.initProduct('product-handle');
+```
 
-## Vercel, Next.js Commerce, and Shopify Integration Guide
+### Option B: CDN Script Tag (Vanilla JS, Liquid, Webview)
 
-You can use this comprehensive [integration guide](https://vercel.com/docs/integrations/ecommerce/shopify) with step-by-step instructions on how to configure Shopify as a headless CMS using Next.js Commerce as your headless Shopify storefront on Vercel.
+No bundler needed. Add a script tag and configure via `window.AVADA_SUBSCRIPTION_CONFIG`.
+
+```html
+<script>
+  window.AVADA_SUBSCRIPTION_CONFIG = {
+    shopDomain: 'your-store.myshopify.com',
+    storefrontAccessToken: 'your-storefront-access-token'
+  };
+</script>
+<script src="https://unpkg.com/joy-subscription-sdk/dist/subscription-sdk.umd.js" defer></script>
+```
+
+Once loaded, the SDK is available at `window.AvadaSubscription`:
+
+```html
+<script>
+  window.addEventListener('subscription:ready', function(e) {
+    var sdk = e.detail.sdk;
+
+    // Initialize product widget
+    sdk.initProduct('product-handle');
+
+    // Listen for add-to-cart events
+    sdk.on('add-to-cart', function(data) {
+      console.log('Add to cart:', data.lines, data.discountCodes);
+    });
+  });
+</script>
+```
+
+### Option C: UMD Script Tag (Manual control)
+
+Load individual feature bundles for smaller size:
+
+```html
+<!-- Load only what you need -->
+<script src="https://unpkg.com/joy-subscription-sdk/dist/productBundle.umd.js"></script>
+<script>
+  // Global: window.ProductBundleSDK
+  var sdk = new ProductBundleSDK.ProductBundleSDK({
+    shopDomain: 'your-store.myshopify.com',
+    storefrontAccessToken: 'your-storefront-access-token'
+  });
+
+  sdk.on('add-to-cart', function(data) {
+    console.log('Bundle add to cart:', data);
+  });
+
+  sdk.initProductBundle('product-handle');
+</script>
+```
+
+| UMD Bundle         | Script                    | Global Variable            |
+| ------------------ | ------------------------- | -------------------------- |
+| Widget             | `widget.umd.js`           | `window.WidgetSDK`         |
+| Portal             | `portal.umd.js`           | `window.PortalSDK`         |
+| Box                | `box.umd.js`              | `window.BoxSDK`            |
+| Product Bundle     | `productBundle.umd.js`    | `window.ProductBundleSDK`  |
+| CDN (all features) | `subscription-sdk.umd.js` | `window.AvadaSubscription` |
+
+---
+
+## Configuration (NPM)
+
+### Per-instance config
+
+```javascript
+import {WidgetSDK} from 'joy-subscription-sdk/widget';
+
+const sdk = new WidgetSDK({
+  shopDomain: 'your-store.myshopify.com',
+  storefrontAccessToken: 'your-storefront-access-token'
+});
+```
+
+### Global config (recommended for SPA)
+
+Configure once at app entry point, use anywhere without passing config.
+
+```javascript
+// _app.js, main.js, or app entry point
+import {SubscriptionSDK} from 'joy-subscription-sdk';
+
+SubscriptionSDK.configure({
+  shopDomain: process.env.SHOPIFY_DOMAIN,
+  storefrontAccessToken: process.env.STOREFRONT_TOKEN
+});
+```
+
+Then use anywhere:
+
+```javascript
+import {WidgetSDK} from 'joy-subscription-sdk/widget';
+
+// Option A: New instance (uses global config)
+const sdk = new WidgetSDK();
+
+// Option B: Singleton (recommended - shared across components)
+const sdk = WidgetSDK.getInstance();
+```
+
+| Pattern                   | Use Case                                      |
+| ------------------------- | --------------------------------------------- |
+| `new WidgetSDK()`         | Component-scoped, cleaned up with component   |
+| `WidgetSDK.getInstance()` | Shared across app, persists during navigation |
+
+### Config Options
+
+| Option                  | Required | Description                                            |
+| ----------------------- | -------- | ------------------------------------------------------ |
+| `shopDomain`            | Yes      | Shopify shop domain (e.g., `store.myshopify.com`)      |
+| `storefrontAccessToken` | Yes      | Shopify Storefront API access token                    |
+| `apiVersion`            | No       | Storefront API version (default: `2025-01`)            |
+| `apiBaseUrl`            | No       | Custom API base URL (default: `https://sub.joyapp.gg`) |
+
+---
+
+## Bundle Options
+
+### Standalone Bundles (recommended for single feature)
+
+```javascript
+import {WidgetSDK} from 'joy-subscription-sdk/widget'; // 2.3KB gzip
+import {PortalSDK} from 'joy-subscription-sdk/portal'; // 2.6KB gzip
+import {BoxSDK} from 'joy-subscription-sdk/box'; // 2.2KB gzip
+import {ProductBundleSDK} from 'joy-subscription-sdk/productBundle'; // 2.4KB gzip
+import {SubscriptionSDK} from 'joy-subscription-sdk'; // 3.5KB gzip (all)
+```
+
+### Light Bundles (for multiple features)
+
+```javascript
+import 'joy-subscription-sdk/core'; // 2.5KB gzip
+import {WidgetSDK} from 'joy-subscription-sdk/widget/light'; // 1.0KB
+import {PortalSDK} from 'joy-subscription-sdk/portal/light'; // 1.3KB
+import {BoxSDK} from 'joy-subscription-sdk/box/light'; // 0.8KB
+import {ProductBundleSDK} from 'joy-subscription-sdk/productBundle/light'; // 1.0KB
+```
+
+| Scenario        | Standalone | Light + Core | Recommended |
+| --------------- | ---------- | ------------ | ----------- |
+| Widget only     | **2.3KB**  | 3.5KB        | Standalone  |
+| Portal only     | **2.6KB**  | 3.8KB        | Standalone  |
+| Widget + Portal | 4.9KB      | **4.8KB**    | Light       |
+| All 3 features  | 7.1KB      | **5.6KB**    | Light       |
+
+---
+
+## Events
+
+### NPM usage
+
+```javascript
+const unsubscribe = sdk.on('add-to-cart', data => {
+  console.log(data.lines, data.discountCodes);
+});
+
+// Stop listening
+unsubscribe();
+
+// Cleanup all listeners
+sdk.destroy();
+```
+
+### CDN / Vanilla JS usage
+
+```javascript
+// SDK ready event
+window.addEventListener('subscription:ready', function(e) {
+  var sdk = e.detail.sdk;
+  // SDK is ready, initialize features
+});
+
+// Add-to-cart event (from widget or bundle)
+window.addEventListener('avada:add-to-cart', function(e) {
+  var data = e.detail;
+  console.log('Lines:', data.lines);
+  console.log('Discount codes:', data.discountCodes);
+});
+
+// Plan selected event (from widget)
+window.addEventListener('avada:plan:selected', function(e) {
+  console.log('Selected plan:', e.detail);
+});
+```
+
+### Available Events
+
+| Event                | Description                           |
+| -------------------- | ------------------------------------- |
+| `subscription:ready` | SDK initialized and ready (CDN only)  |
+| `add-to-cart`        | User clicked add to cart (bundle/box) |
+| `plan:selected`      | User selected a subscription plan     |
+| `init`               | Widget initialized                    |
+| `portal:init`        | Customer portal initialized           |
+
+## Common API (BaseSDK)
+
+All SDKs (WidgetSDK, PortalSDK, BoxSDK, ProductBundleSDK) inherit these methods:
+
+```javascript
+// Listen for events
+const unsubscribe = sdk.on('plan:selected', (data) => { ... });
+
+// Stop listening
+unsubscribe();
+
+// Get current selected plan
+const plan = sdk.getSelectedPlan();
+
+// Cleanup all listeners
+sdk.destroy();
+```
+
+---
+
+## Guides
+
+| Guide                                        | Description                             |
+| -------------------------------------------- | --------------------------------------- |
+| [Product Widget](./product-widget.md)     | Subscription widget on product pages    |
+| [Product Bundle](./product-bundle.md)     | Product bundle widget on product pages  |
+| [Subscription Box](./subscription-box.md) | Subscription box on dedicated pages     |
+| [Customer Portal](./customer-portal.md)   | Customer subscription management portal |
+
+---
+
+## Advanced Usage
+
+### Direct Client Access
+
+```javascript
+import {SubscriptionClient} from 'joy-subscription-sdk/core';
+
+const client = new SubscriptionClient({
+  shopDomain: 'store.myshopify.com',
+  storefrontAccessToken: 'xxxxx'
+});
+
+const shopData = await client.getShopData();
+const productData = await client.getProductData('handle');
+const combined = await client.getShopAndProductData('handle');
+```
+
+### Manual Script Loading
+
+```javascript
+await sdk.initProduct('handle', {autoLoadScript: false});
+
+import {loadScript, SCRIPTS} from 'joy-subscription-sdk/core';
+await loadScript(SCRIPTS.WIDGET);
+```
+
+### Script Utilities
+
+```javascript
+import {
+  loadScript,
+  isScriptLoaded,
+  preloadScript,
+  getScriptUrl,
+  SCRIPTS
+} from 'joy-subscription-sdk/core';
+
+if (!isScriptLoaded(SCRIPTS.WIDGET)) {
+  await loadScript(SCRIPTS.WIDGET);
+}
+
+getScriptUrl(SCRIPTS.WIDGET);
+// -> https://cdn-joy-sub.avada.io/scripttag/avada-subscription-main.min.js?v=1.0.0
+```
+
+---
+
+## License
+
+MIT

@@ -12,6 +12,7 @@ const { SITE_NAME } = process.env;
 
 const staticLinks: Menu[] = [
   { title: "Collections", path: "/collections" },
+  { title: "Subscription Box", path: "/pages/subscription-box" },
   { title: "Search", path: "/search" },
 ];
 
