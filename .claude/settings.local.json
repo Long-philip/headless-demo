@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "Bash(pnpm install:*)",
+      "Bash(npm --version:*)",
+      "Bash(npm install:*)",
+      "Bash(pnpm build:*)"
+    ]
+  }
+}
