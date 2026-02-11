@@ -13,6 +13,7 @@ const { SITE_NAME } = process.env;
 const staticLinks: Menu[] = [
   { title: "Collections", path: "/collections" },
   { title: "Subscription Box", path: "/pages/subscription-box" },
+  { title: "My Subscriptions", path: "/pages/joy-subscription" },
   { title: "Search", path: "/search" },
 ];
 
@@ -60,8 +61,8 @@ export async function Navbar() {
         </div>
         <div className="flex items-center justify-end gap-3 md:w-1/3">
           <NavWishlistLink />
-          <Link
-            href="/account"
+          <a
+            href={`https://${process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN}/account`}
             className="text-neutral-500 hover:text-black dark:text-neutral-400 dark:hover:text-neutral-300"
             aria-label="Account"
           >
@@ -79,7 +80,7 @@ export async function Navbar() {
                 d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
               />
             </svg>
-          </Link>
+          </a>
           <CartModal />
         </div>
       </div>
