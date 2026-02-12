@@ -3,34 +3,49 @@ import Price from "components/price";
 import Prose from "components/prose";
 import { SubscriptionProvider } from "components/subscription/subscription-context";
 import { SubscriptionWidget } from "components/subscription/subscription-widget";
-import { WishlistButton } from "components/wishlist/wishlist-button";
 import { Product } from "lib/shopify/types";
 import { VariantSelector } from "./variant-selector";
 
 export function ProductDescription({ product }: { product: Product }) {
   return (
     <SubscriptionProvider>
-      <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
-        <div className="flex items-start justify-between">
-          <h1 className="mb-2 text-5xl font-medium">{product.title}</h1>
-          <WishlistButton product={product} />
-        </div>
-        <div className="mr-auto w-auto rounded-full bg-brand p-2 text-sm text-white">
-          <Price
-            amount={product.priceRange.maxVariantPrice.amount}
-            currencyCode={product.priceRange.maxVariantPrice.currencyCode}
-          />
-        </div>
+      {/* Title */}
+      <h1 className="mb-2 text-4xl font-medium leading-tight lg:text-5xl">
+        {product.title}
+      </h1>
+
+      {/* Price */}
+      <div className="mb-6 text-lg text-black/80">
+        <Price
+          amount={product.priceRange.maxVariantPrice.amount}
+          currencyCode={product.priceRange.maxVariantPrice.currencyCode}
+        />
       </div>
+
+      {/* Variants */}
       <VariantSelector options={product.options} variants={product.variants} />
+
+      {/* Subscription Widget */}
       <SubscriptionWidget productHandle={product.handle} />
+
+      {/* Add to Cart */}
+      <AddToCart product={product} />
+
+      {/* Vendor */}
+      {product.tags.length > 0 && (
+        <p className="mt-6 text-sm text-black/60">
+          <span className="font-medium text-black/80">From:</span>{" "}
+          {product.tags[0]}
+        </p>
+      )}
+
+      {/* Description */}
       {product.descriptionHtml ? (
         <Prose
-          className="mb-6 text-sm leading-tight dark:text-white/[60%]"
+          className="mt-4 text-sm leading-relaxed text-black/70"
           html={product.descriptionHtml}
         />
       ) : null}
-      <AddToCart product={product} />
     </SubscriptionProvider>
   );
 }

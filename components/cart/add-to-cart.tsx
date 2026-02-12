@@ -1,6 +1,5 @@
 "use client";
 
-import { PlusIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { addItem } from "components/cart/actions";
 import { useSubscriptionOptional } from "components/subscription/subscription-context";
@@ -19,7 +18,7 @@ function SubmitButton({
   isSubscription: boolean;
 }) {
   const buttonClasses =
-    "relative flex w-full items-center justify-center rounded-[14px] bg-brand p-4 tracking-wide text-white";
+    "flex w-full items-center justify-center rounded-full bg-brand p-4 text-sm font-medium tracking-wide text-white";
   const disabledClasses = "cursor-not-allowed opacity-60 hover:opacity-60";
 
   if (!availableForSale) {
@@ -37,10 +36,7 @@ function SubmitButton({
         disabled
         className={clsx(buttonClasses, disabledClasses)}
       >
-        <div className="absolute left-0 ml-4">
-          <PlusIcon className="h-5" />
-        </div>
-        Add To Cart
+        Add to cart
       </button>
     );
   }
@@ -48,14 +44,9 @@ function SubmitButton({
   return (
     <button
       aria-label={isSubscription ? "Subscribe" : "Add to cart"}
-      className={clsx(buttonClasses, {
-        "hover:opacity-90": true,
-      })}
+      className={clsx(buttonClasses, "hover:opacity-90")}
     >
-      <div className="absolute left-0 ml-4">
-        <PlusIcon className="h-5" />
-      </div>
-      {isSubscription ? "Subscribe" : "Add To Cart"}
+      {isSubscription ? "Subscribe" : "Add to cart"}
     </button>
   );
 }

@@ -21,6 +21,7 @@ export function SubscriptionBox() {
       }
     });
 
+    // @ts-expect-error boxId is supported at runtime but not in SDK types
     sdk.initSubscriptionBox({ boxId: '5KGbH2BjqdUYBNXsuBDq' });
 
     return () => {
