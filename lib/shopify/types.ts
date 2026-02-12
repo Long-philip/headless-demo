@@ -25,6 +25,11 @@ export type CartItem = {
   cost: {
     totalAmount: Money;
   };
+  sellingPlanAllocation?: {
+    sellingPlan: {
+      name: string;
+    };
+  };
   merchandise: {
     id: string;
     title: string;

@@ -3,6 +3,11 @@
 @plugin "@tailwindcss/container-queries";
 @plugin "@tailwindcss/typography";
 
+@theme {
+  --color-brand: #4EA37A;
+  --color-brand-light: #4EA37A80;
+}
+
 @layer base {
   *,
   ::after,
@@ -10,12 +15,6 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
   }
 }
 
@@ -28,5 +27,15 @@
 a,
 input,
 button {
-  @apply focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-neutral-600 dark:focus-visible:ring-offset-neutral-900;
+  @apply focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white;
+}
+
+/* Prevent SDK injected styles from overriding footer/navbar link colors */
+footer a,
+nav a {
+  color: inherit !important;
+}
+footer a:hover,
+nav a:hover {
+  color: rgb(0 0 0) !important;
 }

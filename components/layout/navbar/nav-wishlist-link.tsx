@@ -15,7 +15,7 @@ export function NavWishlistLink() {
     >
       <HeartIcon className="h-5 w-5" />
       {itemCount > 0 && (
-        <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-medium text-white">
+        <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand text-[10px] font-medium text-white">
           {itemCount}
         </span>
       )}

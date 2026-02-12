@@ -21,7 +21,7 @@ export function SubscriptionBox() {
       }
     });
 
-    sdk.initSubscriptionBox();
+    sdk.initSubscriptionBox({ boxId: '5KGbH2BjqdUYBNXsuBDq' });
 
     return () => {
       unsubscribe();

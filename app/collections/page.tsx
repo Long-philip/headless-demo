@@ -26,7 +26,7 @@ export default async function CollectionsPage() {
               <Link
                 key={collection.handle}
                 href={`/collections/${collection.handle}`}
-                className="group overflow-hidden rounded-lg border border-neutral-200 bg-white transition-all hover:border-blue-600 dark:border-neutral-800 dark:bg-black"
+                className="group overflow-hidden rounded-lg border border-neutral-200 bg-white transition-all hover:border-brand dark:border-neutral-800 dark:bg-black"
               >
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100 dark:bg-neutral-900">
                   {collection.image ? (

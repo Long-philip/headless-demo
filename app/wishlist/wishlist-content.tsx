@@ -17,7 +17,7 @@ export function WishlistContent() {
         </p>
         <Link
           href="/search"
-          className="mt-4 rounded-md bg-blue-600 px-6 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="mt-4 rounded-md bg-brand px-6 py-2 text-sm font-medium text-white hover:bg-blue-700"
         >
           Browse Products
         </Link>

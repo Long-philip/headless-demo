@@ -11,10 +11,10 @@ import { NavWishlistLink } from "./nav-wishlist-link";
 const { SITE_NAME } = process.env;
 
 const staticLinks: Menu[] = [
+  { title: "Shop All", path: "/search" },
   { title: "Collections", path: "/collections" },
   { title: "Subscription Box", path: "/pages/subscription-box" },
   { title: "My Subscriptions", path: "/pages/joy-subscription" },
-  { title: "Search", path: "/search" },
 ];
 
 export async function Navbar() {
@@ -22,23 +22,20 @@ export async function Navbar() {
   const allMenuItems = [...staticLinks, ...menu];
 
   return (
-    <nav className="relative flex items-center justify-between p-4 lg:px-6">
-      <div className="block flex-none md:hidden">
-        <Suspense fallback={null}>
-          <MobileMenu menu={allMenuItems} />
-        </Suspense>
-      </div>
-      <div className="flex w-full items-center">
-        <div className="flex w-full md:w-1/3">
+    <nav className="sticky top-0 z-50 bg-white border-b border-brand/30 shadow-sm">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-6">
+        <div className="block flex-none md:hidden">
+          <Suspense fallback={null}>
+            <MobileMenu menu={allMenuItems} />
+          </Suspense>
+        </div>
+        <div className="flex items-center gap-6">
           <Link
             href="/"
             prefetch={true}
-            className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
+            className="flex items-center gap-2"
           >
             <LogoSquare />
-            <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
-              {SITE_NAME}
-            </div>
           </Link>
           <ul className="hidden gap-6 text-sm md:flex md:items-center">
             {allMenuItems.map((item: Menu) => (
@@ -46,7 +43,7 @@ export async function Navbar() {
                 <Link
                   href={item.path}
                   prefetch={true}
-                  className="text-neutral-500 underline-offset-4 hover:text-black hover:underline dark:text-neutral-400 dark:hover:text-neutral-300"
+                  className="font-medium text-black/[0.81] underline-offset-4 hover:text-brand transition-colors"
                 >
                   {item.title}
                 </Link>
@@ -54,16 +51,16 @@ export async function Navbar() {
             ))}
           </ul>
         </div>
-        <div className="hidden justify-center md:flex md:w-1/3">
-          <Suspense fallback={<SearchSkeleton />}>
-            <Search />
-          </Suspense>
-        </div>
-        <div className="flex items-center justify-end gap-3 md:w-1/3">
+        <div className="flex items-center gap-4">
+          <div className="hidden md:block">
+            <Suspense fallback={<SearchSkeleton />}>
+              <Search />
+            </Suspense>
+          </div>
           <NavWishlistLink />
           <a
             href={`https://${process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN}/account`}
-            className="text-neutral-500 hover:text-black dark:text-neutral-400 dark:hover:text-neutral-300"
+            className="text-black/60 hover:text-brand transition-colors"
             aria-label="Account"
           >
             <svg

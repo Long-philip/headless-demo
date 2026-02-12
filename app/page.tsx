@@ -1,10 +1,14 @@
-import { Carousel } from "components/carousel";
-import { ThreeItemGrid } from "components/grid/three-items";
+import { FeaturedProducts } from "components/homepage/featured-products";
+import { HeroBanner } from "components/homepage/hero-banner";
+import { MissionBanner } from "components/homepage/mission-banner";
+import { MissionSection } from "components/homepage/mission-section";
+import { ReviewsCarousel } from "components/homepage/reviews-carousel";
+import { ShopByCollection } from "components/homepage/shop-by-collection";
 import Footer from "components/layout/footer";
 
 export const metadata = {
   description:
-    "High-performance ecommerce store built with Next.js, Vercel, and Shopify.",
+    "Sustainable, eco-friendly products and subscription plans for everyday living.",
   openGraph: {
     type: "website",
   },
@@ -13,8 +17,12 @@ export const metadata = {
 export default function HomePage() {
   return (
     <>
-      <ThreeItemGrid />
-      <Carousel />
+      <HeroBanner />
+      <MissionSection />
+      <FeaturedProducts />
+      <ShopByCollection />
+      <ReviewsCarousel />
+      <MissionBanner />
       <Footer />
     </>
   );

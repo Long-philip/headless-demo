@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import FooterMenu from "components/layout/footer-menu";
-import LogoSquare from "components/logo-square";
 import { getMenu } from "lib/shopify";
 import { Suspense } from "react";
 
@@ -9,68 +8,186 @@ const { COMPANY_NAME, SITE_NAME } = process.env;
 
 export default async function Footer() {
   const currentYear = new Date().getFullYear();
-  const copyrightDate = 2023 + (currentYear > 2023 ? `-${currentYear}` : "");
-  const skeleton =
-    "w-full h-6 animate-pulse rounded-sm bg-neutral-200 dark:bg-neutral-700";
+  const copyrightDate = currentYear;
+  const skeleton = "w-full h-6 animate-pulse rounded-sm bg-neutral-200";
   const menu = await getMenu("next-js-frontend-footer-menu");
   const copyrightName = COMPANY_NAME || SITE_NAME || "";
 
   return (
-    <footer className="text-sm text-neutral-500 dark:text-neutral-400">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 border-t border-neutral-200 px-6 py-12 text-sm md:flex-row md:gap-12 md:px-4 min-[1320px]:px-0 dark:border-neutral-700">
-        <div>
-          <Link
-            className="flex items-center gap-2 text-black md:pt-1 dark:text-white"
-            href="/"
-          >
-            <LogoSquare size="sm" />
-            <span className="uppercase">{SITE_NAME}</span>
-          </Link>
-        </div>
-        <Suspense
-          fallback={
-            <div className="flex h-[188px] w-[200px] flex-col gap-2">
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
+    <footer className="text-sm text-black/60">
+      <div className="mx-auto max-w-7xl px-6 py-12 md:px-4 min-[1320px]:px-0">
+        {/* Top section: Logo left + Link columns right */}
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[280px_1fr]">
+          {/* Left: Logo */}
+          <div>
+            <Link className="flex items-center gap-2" href="/">
+              <div className="h-[80px] w-[80px] flex-none overflow-hidden rounded-xl">
+                <img
+                  src="/joy-logo.webp"
+                  alt="Logo"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </Link>
+          </div>
+
+          {/* Right: 3 link columns + email input */}
+          <div className="flex flex-col gap-8">
+            {/* Link columns */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+              {/* Column 1 - Quick Links */}
+              <Suspense
+                fallback={
+                  <div className="flex flex-col gap-3">
+                    <div className={skeleton} />
+                    <div className={skeleton} />
+                    <div className={skeleton} />
+                  </div>
+                }
+              >
+                <FooterMenu menu={menu} />
+              </Suspense>
+              <a
+                href="https://cal.com/team/joy-team/unlock-predictable-revenue"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-black/60 hover:text-black transition-colors"
+              >
+                Book a call
+              </a>
+
+              {/* Column 2 - Customer Service */}
+              <ul className="flex flex-col gap-3">
+                <li>
+                  <Link
+                    href="/pages/subscription-box"
+                    className="text-black/60 hover:text-black transition-colors"
+                  >
+                    Subscription Box
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/pages/joy-subscription"
+                    className="text-black/60 hover:text-black transition-colors"
+                  >
+                    My Subscriptions
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href={`https://${process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN}/account`}
+                    className="text-black/60 hover:text-black transition-colors"
+                  >
+                    My Account
+                  </a>
+                </li>
+              </ul>
+
+              {/* Column 3 - Policies */}
+              <ul className="flex flex-col gap-3">
+                <li>
+                  <Link
+                    href="/pages/privacy-policy"
+                    className="text-black/60 hover:text-black transition-colors"
+                  >
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/pages/terms-of-service"
+                    className="text-black/60 hover:text-black transition-colors"
+                  >
+                    Terms of Service
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/pages/return-policy"
+                    className="text-black/60 hover:text-black transition-colors"
+                  >
+                    Return Policy
+                  </Link>
+                </li>
+              </ul>
             </div>
-          }
-        >
-          <FooterMenu menu={menu} />
-        </Suspense>
-        <div className="md:ml-auto">
-          <a
-            className="flex h-8 w-max flex-none items-center justify-center rounded-md border border-neutral-200 bg-white text-xs text-black dark:border-neutral-700 dark:bg-black dark:text-white"
-            aria-label="Deploy on Vercel"
-            href="https://vercel.com/templates/next.js/nextjs-commerce"
-          >
-            <span className="px-3">▲</span>
-            <hr className="h-full border-r border-neutral-200 dark:border-neutral-700" />
-            <span className="px-3">Deploy</span>
-          </a>
+          </div>
         </div>
       </div>
-      <div className="border-t border-neutral-200 py-6 text-sm dark:border-neutral-700">
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-1 px-4 md:flex-row md:gap-0 md:px-4 min-[1320px]:px-0">
-          <p>
-            &copy; {copyrightDate} {copyrightName}
-            {copyrightName.length && !copyrightName.endsWith(".")
-              ? "."
-              : ""}{" "}
-            All rights reserved.
-          </p>
-          <hr className="mx-4 hidden h-4 w-[1px] border-l border-neutral-400 md:inline-block" />
-          <p>
-            <a href="https://github.com/vercel/commerce">View the source</a>
-          </p>
-          <p className="md:ml-auto">
-            <a href="https://vercel.com" className="text-black dark:text-white">
-              Created by ▲ Vercel
+
+      {/* Bottom Bar */}
+      <div className="border-t border-neutral-200 py-6 text-sm">
+        <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-4 px-6 md:flex-row md:justify-between md:px-4 min-[1320px]:px-0">
+          <div className="flex flex-col items-center gap-2 md:flex-row md:gap-4">
+            <p>
+              &copy; {copyrightDate} {copyrightName}, Powered by Shopify
+            </p>
+            <Link
+              href="/pages/terms-and-policies"
+              className="hover:text-black transition-colors"
+            >
+              Terms and Policies
+            </Link>
+          </div>
+          {/* Social icons */}
+          <div className="flex items-center gap-4">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="text-black/60 hover:text-black transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
             </a>
-          </p>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="text-black/60 hover:text-black transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+              </svg>
+            </a>
+            <a
+              href="https://youtube.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              className="text-black/60 hover:text-black transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </a>
+            <a
+              href="https://tiktok.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok"
+              className="text-black/60 hover:text-black transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+              </svg>
+            </a>
+            <a
+              href="https://x.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X"
+              className="text-black/60 hover:text-black transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </footer>
