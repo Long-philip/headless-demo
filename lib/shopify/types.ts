@@ -73,9 +73,10 @@ export type Page = {
   updatedAt: string;
 };
 
-export type Product = Omit<ShopifyProduct, "variants" | "images"> & {
+export type Product = Omit<ShopifyProduct, "variants" | "images" | "sellingPlanGroups"> & {
   variants: ProductVariant[];
   images: Image[];
+  sellingPlanGroups: SellingPlanGroup[];
 };
 
 export type ProductOption = {
@@ -93,6 +94,16 @@ export type ProductVariant = {
     value: string;
   }[];
   price: Money;
+};
+
+export type SellingPlan = {
+  id: string;
+  name: string;
+};
+
+export type SellingPlanGroup = {
+  name: string;
+  sellingPlans: SellingPlan[];
 };
 
 export type SEO = {
@@ -136,6 +147,10 @@ export type ShopifyProduct = {
   variants: Connection<ProductVariant>;
   featuredImage: Image;
   images: Connection<Image>;
+  sellingPlanGroups: Connection<{
+    name: string;
+    sellingPlans: Connection<SellingPlan>;
+  }>;
   seo: SEO;
   tags: string[];
   updatedAt: string;

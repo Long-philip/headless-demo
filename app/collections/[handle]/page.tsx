@@ -59,7 +59,7 @@ export default async function CollectionPage(props: {
             No products found in this collection.
           </p>
         ) : (
-          <Grid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <Grid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <ProductGridItems products={products} />
           </Grid>
         )}

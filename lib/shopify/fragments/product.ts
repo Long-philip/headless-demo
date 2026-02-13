@@ -54,6 +54,21 @@ const productFragment = /* GraphQL */ `
     seo {
       ...seo
     }
+    sellingPlanGroups(first: 10) {
+      edges {
+        node {
+          name
+          sellingPlans(first: 10) {
+            edges {
+              node {
+                id
+                name
+              }
+            }
+          }
+        }
+      }
+    }
     tags
     updatedAt
   }
