@@ -33,11 +33,11 @@ SDK                              Scripttag (portal)              Headless Store
 ## Quick Start
 
 ```javascript
-import {PortalSDK} from 'joy-subscription-sdk/portal';
+import { PortalSDK } from "joy-subscription-sdk/portal";
 
 const sdk = new PortalSDK({
-  shopDomain: 'your-store.myshopify.com',
-  storefrontAccessToken: 'your-storefront-access-token'
+  shopDomain: "your-store.myshopify.com",
+  storefrontAccessToken: "your-storefront-access-token",
 });
 
 await sdk.initCustomerPortal();
@@ -65,11 +65,11 @@ await sdk.initCustomerPortal({
   autoLoadScript: true, // Default: true - auto load portal script
   customer: {
     // Optional: pre-authenticated customer data
-    id: 'gid://shopify/Customer/123',
-    email: 'customer@example.com',
-    firstName: 'John',
-    lastName: 'Doe'
-  }
+    id: "gid://shopify/Customer/123",
+    email: "customer@example.com",
+    firstName: "John",
+    lastName: "Doe",
+  },
 });
 ```
 
@@ -119,12 +119,12 @@ sdk.preloadPortal();
 
 Headless stores should use the URL pattern `/pages/joy-subscription` with sub-routes:
 
-| Path                                                     | Page                |
-| -------------------------------------------------------- | ------------------- |
-| `/pages/joy-subscription`                                | Subscription list   |
-| `/pages/joy-subscription/subscription?contractId=xxx`    | Subscription detail |
-| `/pages/joy-subscription/order`                          | Order details       |
-| `/pages/joy-subscription/upcoming-orders`                | Upcoming orders     |
+| Path                                                  | Page                |
+| ----------------------------------------------------- | ------------------- |
+| `/pages/joy-subscription`                             | Subscription list   |
+| `/pages/joy-subscription/subscription?contractId=xxx` | Subscription detail |
+| `/pages/joy-subscription/order`                       | Order details       |
+| `/pages/joy-subscription/upcoming-orders`             | Upcoming orders     |
 
 The scripttag derives the current page from `window.location.pathname` relative to the portal base path.
 
@@ -150,11 +150,11 @@ If your headless store already has the customer logged in, pass the customer dat
 ```javascript
 await sdk.initCustomerPortal({
   customer: {
-    id: 'gid://shopify/Customer/123',
-    email: 'customer@example.com',
-    firstName: 'John',
-    lastName: 'Doe'
-  }
+    id: "gid://shopify/Customer/123",
+    email: "customer@example.com",
+    firstName: "John",
+    lastName: "Doe",
+  },
 });
 ```
 
@@ -165,20 +165,20 @@ await sdk.initCustomerPortal({
 ### React / Next.js
 
 ```jsx
-import {useEffect} from 'react';
-import {PortalSDK} from 'joy-subscription-sdk/portal';
+import { useEffect } from "react";
+import { PortalSDK } from "joy-subscription-sdk/portal";
 
-export function CustomerPortalPage({cartId, cartLinesAdd}) {
+export function CustomerPortalPage({ cartId, cartLinesAdd }) {
   useEffect(() => {
     const sdk = new PortalSDK({
       shopDomain: process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN,
-      storefrontAccessToken: process.env.NEXT_PUBLIC_STOREFRONT_TOKEN
+      storefrontAccessToken: process.env.NEXT_PUBLIC_STOREFRONT_TOKEN,
     });
 
     // Handle "Add new subscription" action
-    const unsubscribe = sdk.on('add-to-cart', async data => {
-      await cartLinesAdd({cartId, lines: data.lines});
-      window.location.href = '/checkout';
+    const unsubscribe = sdk.on("add-to-cart", async (data) => {
+      await cartLinesAdd({ cartId, lines: data.lines });
+      window.location.href = "/checkout";
     });
 
     sdk.initCustomerPortal();
@@ -202,24 +202,24 @@ export function CustomerPortalPage({cartId, cartLinesAdd}) {
 </template>
 
 <script setup>
-import {onMounted, onBeforeUnmount} from 'vue';
-import {PortalSDK} from 'joy-subscription-sdk/portal';
-import {useCart} from '@/composables/useCart';
+import { onMounted, onBeforeUnmount } from "vue";
+import { PortalSDK } from "joy-subscription-sdk/portal";
+import { useCart } from "@/composables/useCart";
 
-const {cartId, cartLinesAdd} = useCart();
+const { cartId, cartLinesAdd } = useCart();
 let sdk;
 let unsubscribe;
 
 onMounted(async () => {
   sdk = new PortalSDK({
     shopDomain: import.meta.env.VITE_SHOPIFY_DOMAIN,
-    storefrontAccessToken: import.meta.env.VITE_STOREFRONT_TOKEN
+    storefrontAccessToken: import.meta.env.VITE_STOREFRONT_TOKEN,
   });
 
   // Handle "Add new subscription" action
-  unsubscribe = sdk.on('add-to-cart', async data => {
-    await cartLinesAdd({cartId: cartId.value, lines: data.lines});
-    window.location.href = '/checkout';
+  unsubscribe = sdk.on("add-to-cart", async (data) => {
+    await cartLinesAdd({ cartId: cartId.value, lines: data.lines });
+    window.location.href = "/checkout";
   });
 
   await sdk.initCustomerPortal();
@@ -240,12 +240,12 @@ onBeforeUnmount(() => {
 When users click "Add new subscription" in the customer portal, the scripttag emits an `avada:add-to-cart` event instead of calling `/cart/add.js`. Your headless store must handle this event.
 
 ```javascript
-sdk.on('add-to-cart', async data => {
+sdk.on("add-to-cart", async (data) => {
   // data.lines - Array of CartLineInput (GID format, ready for Storefront API)
-  const {cart} = await cartLinesAdd({cartId, lines: data.lines});
+  const { cart } = await cartLinesAdd({ cartId, lines: data.lines });
 
   // Redirect to checkout or open cart drawer
-  window.location.href = '/checkout';
+  window.location.href = "/checkout";
 });
 ```
 
@@ -277,7 +277,8 @@ In Shopify themes, text colors inherit from the theme's CSS. In headless stores,
 ```css
 .Avada-CustomerPortal--Headless {
   color: var(--sub-color-primary, #1c1c1c);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   line-height: 1.5;
 }
 ```
@@ -286,7 +287,7 @@ In Shopify themes, text colors inherit from the theme's CSS. In headless stores,
 
 ```css
 .Avada-CustomerPortal--Headless {
-  font-family: 'Your Custom Font', sans-serif;
+  font-family: "Your Custom Font", sans-serif;
 }
 ```
 

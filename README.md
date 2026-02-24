@@ -19,14 +19,14 @@ npm install joy-subscription-sdk
 ```
 
 ```javascript
-import {WidgetSDK} from 'joy-subscription-sdk/widget';
+import { WidgetSDK } from "joy-subscription-sdk/widget";
 
 const sdk = new WidgetSDK({
-  shopDomain: 'your-store.myshopify.com',
-  storefrontAccessToken: 'your-storefront-access-token'
+  shopDomain: "your-store.myshopify.com",
+  storefrontAccessToken: "your-storefront-access-token",
 });
 
-await sdk.initProduct('product-handle');
+await sdk.initProduct("product-handle");
 ```
 
 ### Option B: CDN Script Tag (Vanilla JS, Liquid, Webview)
@@ -36,26 +36,29 @@ No bundler needed. Add a script tag and configure via `window.AVADA_SUBSCRIPTION
 ```html
 <script>
   window.AVADA_SUBSCRIPTION_CONFIG = {
-    shopDomain: 'your-store.myshopify.com',
-    storefrontAccessToken: 'your-storefront-access-token'
+    shopDomain: "your-store.myshopify.com",
+    storefrontAccessToken: "your-storefront-access-token",
   };
 </script>
-<script src="https://unpkg.com/joy-subscription-sdk/dist/subscription-sdk.umd.js" defer></script>
+<script
+  src="https://unpkg.com/joy-subscription-sdk/dist/subscription-sdk.umd.js"
+  defer
+></script>
 ```
 
 Once loaded, the SDK is available at `window.AvadaSubscription`:
 
 ```html
 <script>
-  window.addEventListener('subscription:ready', function(e) {
+  window.addEventListener("subscription:ready", function (e) {
     var sdk = e.detail.sdk;
 
     // Initialize product widget
-    sdk.initProduct('product-handle');
+    sdk.initProduct("product-handle");
 
     // Listen for add-to-cart events
-    sdk.on('add-to-cart', function(data) {
-      console.log('Add to cart:', data.lines, data.discountCodes);
+    sdk.on("add-to-cart", function (data) {
+      console.log("Add to cart:", data.lines, data.discountCodes);
     });
   });
 </script>
@@ -71,15 +74,15 @@ Load individual feature bundles for smaller size:
 <script>
   // Global: window.ProductBundleSDK
   var sdk = new ProductBundleSDK.ProductBundleSDK({
-    shopDomain: 'your-store.myshopify.com',
-    storefrontAccessToken: 'your-storefront-access-token'
+    shopDomain: "your-store.myshopify.com",
+    storefrontAccessToken: "your-storefront-access-token",
   });
 
-  sdk.on('add-to-cart', function(data) {
-    console.log('Bundle add to cart:', data);
+  sdk.on("add-to-cart", function (data) {
+    console.log("Bundle add to cart:", data);
   });
 
-  sdk.initProductBundle('product-handle');
+  sdk.initProductBundle("product-handle");
 </script>
 ```
 
@@ -98,11 +101,11 @@ Load individual feature bundles for smaller size:
 ### Per-instance config
 
 ```javascript
-import {WidgetSDK} from 'joy-subscription-sdk/widget';
+import { WidgetSDK } from "joy-subscription-sdk/widget";
 
 const sdk = new WidgetSDK({
-  shopDomain: 'your-store.myshopify.com',
-  storefrontAccessToken: 'your-storefront-access-token'
+  shopDomain: "your-store.myshopify.com",
+  storefrontAccessToken: "your-storefront-access-token",
 });
 ```
 
@@ -112,18 +115,18 @@ Configure once at app entry point, use anywhere without passing config.
 
 ```javascript
 // _app.js, main.js, or app entry point
-import {SubscriptionSDK} from 'joy-subscription-sdk';
+import { SubscriptionSDK } from "joy-subscription-sdk";
 
 SubscriptionSDK.configure({
   shopDomain: process.env.SHOPIFY_DOMAIN,
-  storefrontAccessToken: process.env.STOREFRONT_TOKEN
+  storefrontAccessToken: process.env.STOREFRONT_TOKEN,
 });
 ```
 
 Then use anywhere:
 
 ```javascript
-import {WidgetSDK} from 'joy-subscription-sdk/widget';
+import { WidgetSDK } from "joy-subscription-sdk/widget";
 
 // Option A: New instance (uses global config)
 const sdk = new WidgetSDK();
@@ -153,21 +156,21 @@ const sdk = WidgetSDK.getInstance();
 ### Standalone Bundles (recommended for single feature)
 
 ```javascript
-import {WidgetSDK} from 'joy-subscription-sdk/widget'; // 2.3KB gzip
-import {PortalSDK} from 'joy-subscription-sdk/portal'; // 2.6KB gzip
-import {BoxSDK} from 'joy-subscription-sdk/box'; // 2.2KB gzip
-import {ProductBundleSDK} from 'joy-subscription-sdk/productBundle'; // 2.4KB gzip
-import {SubscriptionSDK} from 'joy-subscription-sdk'; // 3.5KB gzip (all)
+import { WidgetSDK } from "joy-subscription-sdk/widget"; // 2.3KB gzip
+import { PortalSDK } from "joy-subscription-sdk/portal"; // 2.6KB gzip
+import { BoxSDK } from "joy-subscription-sdk/box"; // 2.2KB gzip
+import { ProductBundleSDK } from "joy-subscription-sdk/productBundle"; // 2.4KB gzip
+import { SubscriptionSDK } from "joy-subscription-sdk"; // 3.5KB gzip (all)
 ```
 
 ### Light Bundles (for multiple features)
 
 ```javascript
-import 'joy-subscription-sdk/core'; // 2.5KB gzip
-import {WidgetSDK} from 'joy-subscription-sdk/widget/light'; // 1.0KB
-import {PortalSDK} from 'joy-subscription-sdk/portal/light'; // 1.3KB
-import {BoxSDK} from 'joy-subscription-sdk/box/light'; // 0.8KB
-import {ProductBundleSDK} from 'joy-subscription-sdk/productBundle/light'; // 1.0KB
+import "joy-subscription-sdk/core"; // 2.5KB gzip
+import { WidgetSDK } from "joy-subscription-sdk/widget/light"; // 1.0KB
+import { PortalSDK } from "joy-subscription-sdk/portal/light"; // 1.3KB
+import { BoxSDK } from "joy-subscription-sdk/box/light"; // 0.8KB
+import { ProductBundleSDK } from "joy-subscription-sdk/productBundle/light"; // 1.0KB
 ```
 
 | Scenario        | Standalone | Light + Core | Recommended |
@@ -184,7 +187,7 @@ import {ProductBundleSDK} from 'joy-subscription-sdk/productBundle/light'; // 1.
 ### NPM usage
 
 ```javascript
-const unsubscribe = sdk.on('add-to-cart', data => {
+const unsubscribe = sdk.on("add-to-cart", (data) => {
   console.log(data.lines, data.discountCodes);
 });
 
@@ -199,21 +202,21 @@ sdk.destroy();
 
 ```javascript
 // SDK ready event
-window.addEventListener('subscription:ready', function(e) {
+window.addEventListener("subscription:ready", function (e) {
   var sdk = e.detail.sdk;
   // SDK is ready, initialize features
 });
 
 // Add-to-cart event (from widget or bundle)
-window.addEventListener('avada:add-to-cart', function(e) {
+window.addEventListener("avada:add-to-cart", function (e) {
   var data = e.detail;
-  console.log('Lines:', data.lines);
-  console.log('Discount codes:', data.discountCodes);
+  console.log("Lines:", data.lines);
+  console.log("Discount codes:", data.discountCodes);
 });
 
 // Plan selected event (from widget)
-window.addEventListener('avada:plan:selected', function(e) {
-  console.log('Selected plan:', e.detail);
+window.addEventListener("avada:plan:selected", function (e) {
+  console.log("Selected plan:", e.detail);
 });
 ```
 
@@ -226,6 +229,7 @@ window.addEventListener('avada:plan:selected', function(e) {
 | `plan:selected`      | User selected a subscription plan     |
 | `init`               | Widget initialized                    |
 | `portal:init`        | Customer portal initialized           |
+| `box:init`           | Subscription box initialized          |
 
 ## Common API (BaseSDK)
 
@@ -249,8 +253,8 @@ sdk.destroy();
 
 ## Guides
 
-| Guide                                        | Description                             |
-| -------------------------------------------- | --------------------------------------- |
+| Guide                                     | Description                             |
+| ----------------------------------------- | --------------------------------------- |
 | [Product Widget](./product-widget.md)     | Subscription widget on product pages    |
 | [Product Bundle](./product-bundle.md)     | Product bundle widget on product pages  |
 | [Subscription Box](./subscription-box.md) | Subscription box on dedicated pages     |
@@ -263,24 +267,24 @@ sdk.destroy();
 ### Direct Client Access
 
 ```javascript
-import {SubscriptionClient} from 'joy-subscription-sdk/core';
+import { SubscriptionClient } from "joy-subscription-sdk/core";
 
 const client = new SubscriptionClient({
-  shopDomain: 'store.myshopify.com',
-  storefrontAccessToken: 'xxxxx'
+  shopDomain: "store.myshopify.com",
+  storefrontAccessToken: "xxxxx",
 });
 
 const shopData = await client.getShopData();
-const productData = await client.getProductData('handle');
-const combined = await client.getShopAndProductData('handle');
+const productData = await client.getProductData("handle");
+const combined = await client.getShopAndProductData("handle");
 ```
 
 ### Manual Script Loading
 
 ```javascript
-await sdk.initProduct('handle', {autoLoadScript: false});
+await sdk.initProduct("handle", { autoLoadScript: false });
 
-import {loadScript, SCRIPTS} from 'joy-subscription-sdk/core';
+import { loadScript, SCRIPTS } from "joy-subscription-sdk/core";
 await loadScript(SCRIPTS.WIDGET);
 ```
 
@@ -292,8 +296,8 @@ import {
   isScriptLoaded,
   preloadScript,
   getScriptUrl,
-  SCRIPTS
-} from 'joy-subscription-sdk/core';
+  SCRIPTS,
+} from "joy-subscription-sdk/core";
 
 if (!isScriptLoaded(SCRIPTS.WIDGET)) {
   await loadScript(SCRIPTS.WIDGET);

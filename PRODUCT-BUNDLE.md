@@ -32,30 +32,36 @@ SDK                              Widget (scripttag)              Headless Store
 ## Quick Start
 
 ```javascript
-import { ProductBundleSDK } from 'joy-subscription-sdk/productBundle';
+import { ProductBundleSDK } from "joy-subscription-sdk/productBundle";
 
 const sdk = new ProductBundleSDK({
-  shopDomain: 'your-store.myshopify.com',
-  storefrontAccessToken: 'your-storefront-access-token',
+  shopDomain: "your-store.myshopify.com",
+  storefrontAccessToken: "your-storefront-access-token",
 });
 
 // Listen for add-to-cart events BEFORE init
-sdk.on('add-to-cart', async (data) => {
+sdk.on("add-to-cart", async (data) => {
   // data.lines - Array of CartLineInput (GID format)
   // data.discountCodes - Array of discount codes to apply
   await cartLinesAdd({ cartId, lines: data.lines });
   if (data.discountCodes.length > 0) {
-    await cartDiscountCodesUpdate({ cartId, discountCodes: data.discountCodes });
+    await cartDiscountCodesUpdate({
+      cartId,
+      discountCodes: data.discountCodes,
+    });
   }
 });
 
-await sdk.initProductBundle('product-handle');
+await sdk.initProductBundle("product-handle");
 ```
 
 Your HTML must include the bundle container:
 
 ```html
-<div class="Avada-ProductBundleData-Block" data-product='{"id": "123", "handle": "product-handle"}'></div>
+<div
+  class="Avada-ProductBundleData-Block"
+  data-product='{"id": "123", "handle": "product-handle"}'
+></div>
 ```
 
 ---
@@ -67,15 +73,16 @@ Your HTML must include the bundle container:
 Initialize the product bundle widget for a product page.
 
 ```javascript
-await sdk.initProductBundle('my-product');
+await sdk.initProductBundle("my-product");
 
 // With options
-await sdk.initProductBundle('my-product', {
-  autoLoadScript: true,   // Default: true - auto load widget script
+await sdk.initProductBundle("my-product", {
+  autoLoadScript: true, // Default: true - auto load widget script
 });
 ```
 
 **What it does:**
+
 1. Fetches shop data via `client.getShopData()` (includes bundleSettings)
 2. Finds bundles that include this product
 3. Fetches subscription data for all products in active bundles
@@ -100,7 +107,7 @@ sdk.preloadProductBundle();
 In headless mode, the bundle widget emits an `avada:add-to-cart` event instead of calling `/cart/add.js`. Your headless store must handle this event.
 
 ```javascript
-sdk.on('add-to-cart', async (data) => {
+sdk.on("add-to-cart", async (data) => {
   // data.lines - Array of CartLineInput (GID format, ready for Storefront API)
   // data.discountCodes - Array of discount codes to apply
 
@@ -109,7 +116,10 @@ sdk.on('add-to-cart', async (data) => {
 
   // 2. Apply discount codes if any
   if (data.discountCodes.length > 0) {
-    await cartDiscountCodesUpdate({ cartId, discountCodes: data.discountCodes });
+    await cartDiscountCodesUpdate({
+      cartId,
+      discountCodes: data.discountCodes,
+    });
   }
 });
 ```
@@ -129,15 +139,25 @@ GraphQL mutations:
 ```graphql
 mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
   cartLinesAdd(cartId: $cartId, lines: $lines) {
-    cart { id }
-    userErrors { field message }
+    cart {
+      id
+    }
+    userErrors {
+      field
+      message
+    }
   }
 }
 
 mutation cartDiscountCodesUpdate($cartId: ID!, $discountCodes: [String!]) {
   cartDiscountCodesUpdate(cartId: $cartId, discountCodes: $discountCodes) {
-    cart { id }
-    userErrors { field message }
+    cart {
+      id
+    }
+    userErrors {
+      field
+      message
+    }
   }
 }
 ```
@@ -149,10 +169,15 @@ mutation cartDiscountCodesUpdate($cartId: ID!, $discountCodes: [String!]) {
 ### React / Next.js
 
 ```jsx
-import { useEffect, useRef } from 'react';
-import { ProductBundleSDK } from 'joy-subscription-sdk/productBundle';
+import { useEffect, useRef } from "react";
+import { ProductBundleSDK } from "joy-subscription-sdk/productBundle";
 
-export function ProductBundleWidget({ productHandle, cartId, cartLinesAdd, cartDiscountCodesUpdate }) {
+export function ProductBundleWidget({
+  productHandle,
+  cartId,
+  cartLinesAdd,
+  cartDiscountCodesUpdate,
+}) {
   const sdkRef = useRef(null);
 
   useEffect(() => {
@@ -162,10 +187,13 @@ export function ProductBundleWidget({ productHandle, cartId, cartLinesAdd, cartD
     });
     sdkRef.current = sdk;
 
-    const unsubscribe = sdk.on('add-to-cart', async (data) => {
+    const unsubscribe = sdk.on("add-to-cart", async (data) => {
       await cartLinesAdd({ cartId, lines: data.lines });
       if (data.discountCodes.length > 0) {
-        await cartDiscountCodesUpdate({ cartId, discountCodes: data.discountCodes });
+        await cartDiscountCodesUpdate({
+          cartId,
+          discountCodes: data.discountCodes,
+        });
       }
     });
 
@@ -197,9 +225,9 @@ export function ProductBundleWidget({ productHandle, cartId, cartLinesAdd, cartD
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
-import { ProductBundleSDK } from 'joy-subscription-sdk/productBundle';
-import { useCart } from '@/composables/useCart';
+import { onMounted, onUnmounted } from "vue";
+import { ProductBundleSDK } from "joy-subscription-sdk/productBundle";
+import { useCart } from "@/composables/useCart";
 
 const props = defineProps({ productHandle: String });
 const { cartId, cartLinesAdd, cartDiscountCodesUpdate } = useCart();
@@ -213,10 +241,13 @@ onMounted(async () => {
     storefrontAccessToken: import.meta.env.VITE_STOREFRONT_TOKEN,
   });
 
-  unsubscribe = sdk.on('add-to-cart', async (data) => {
+  unsubscribe = sdk.on("add-to-cart", async (data) => {
     await cartLinesAdd({ cartId: cartId.value, lines: data.lines });
     if (data.discountCodes.length > 0) {
-      await cartDiscountCodesUpdate({ cartId: cartId.value, discountCodes: data.discountCodes });
+      await cartDiscountCodesUpdate({
+        cartId: cartId.value,
+        discountCodes: data.discountCodes,
+      });
     }
   });
 
@@ -280,10 +311,13 @@ The bundle data comes from the shop metafield `avada_product_bundle_settings.dat
 In headless mode, the widget emits `avada:add-to-cart` instead of calling `/cart/add.js`. Make sure you're listening for this event:
 
 ```javascript
-sdk.on('add-to-cart', async (data) => {
+sdk.on("add-to-cart", async (data) => {
   await cartLinesAdd({ cartId, lines: data.lines });
   if (data.discountCodes.length > 0) {
-    await cartDiscountCodesUpdate({ cartId, discountCodes: data.discountCodes });
+    await cartDiscountCodesUpdate({
+      cartId,
+      discountCodes: data.discountCodes,
+    });
   }
 });
 ```

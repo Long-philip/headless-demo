@@ -36,11 +36,11 @@ SDK                              Widget (scripttag)              Headless Store
 ## Quick Start
 
 ```javascript
-import {BoxSDK} from 'joy-subscription-sdk/box';
+import { BoxSDK } from "joy-subscription-sdk/box";
 
 const sdk = new BoxSDK({
-  shopDomain: 'your-store.myshopify.com',
-  storefrontAccessToken: 'your-storefront-access-token'
+  shopDomain: "your-store.myshopify.com",
+  storefrontAccessToken: "your-storefront-access-token",
 });
 
 await sdk.initSubscriptionBox();
@@ -66,7 +66,7 @@ await sdk.initSubscriptionBox();
 // With options
 await sdk.initSubscriptionBox({
   autoLoadScript: true, // Default: true - auto load box scripts
-  includeFixedBundle: true // Default: true - also load fixed bundle script
+  includeFixedBundle: true, // Default: true - also load fixed bundle script
 });
 ```
 
@@ -77,7 +77,7 @@ await sdk.initSubscriptionBox({
 3. Sets `window.AVADA_SUBSCRIPTION_BOX` with box config (for scripttag)
 4. Initializes `window.Shopify` globals (currency, country, shop, routes) from Storefront API localization data
 5. Loads box scripts from CDN
-6. Emits `avada:subscription:init` event
+6. Emits `avada:box:init` event
 
 ### `destroySubscriptionBox()`
 
@@ -121,16 +121,19 @@ The scripttag uses the URL to:
 In headless mode, the box does **not** call `/cart/add.js`. Instead it emits an `avada:add-to-cart` event with Storefront API-ready cart lines in GID format.
 
 ```javascript
-sdk.on('add-to-cart', async data => {
+sdk.on("add-to-cart", async (data) => {
   // data.lines         - Array of CartLineInput (GID format, ready for Storefront API)
   // data.discountCodes - Array of discount codes to apply (e.g., ['JOY_BOX_DISCOUNT'])
 
   // 1. Add lines to cart
-  const {cart} = await cartLinesAdd({cartId, lines: data.lines});
+  const { cart } = await cartLinesAdd({ cartId, lines: data.lines });
 
   // 2. Apply discount codes if any
   if (data.discountCodes.length > 0) {
-    await cartDiscountCodesUpdate({cartId, discountCodes: data.discountCodes});
+    await cartDiscountCodesUpdate({
+      cartId,
+      discountCodes: data.discountCodes,
+    });
   }
 });
 ```
@@ -240,14 +243,14 @@ The box data comes from the shop metafield `avada_subscription_box.data`:
 ### React / Next.js
 
 ```jsx
-import {useEffect} from 'react';
-import {BoxSDK} from 'joy-subscription-sdk/box';
+import { useEffect } from "react";
+import { BoxSDK } from "joy-subscription-sdk/box";
 
 export function SubscriptionBoxPage() {
   useEffect(() => {
     const sdk = new BoxSDK({
       shopDomain: process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN,
-      storefrontAccessToken: process.env.NEXT_PUBLIC_STOREFRONT_TOKEN
+      storefrontAccessToken: process.env.NEXT_PUBLIC_STOREFRONT_TOKEN,
     });
 
     sdk.initSubscriptionBox();
@@ -268,15 +271,15 @@ export function SubscriptionBoxPage() {
 </template>
 
 <script setup>
-import {onMounted, onBeforeUnmount} from 'vue';
-import {BoxSDK} from 'joy-subscription-sdk/box';
+import { onMounted, onBeforeUnmount } from "vue";
+import { BoxSDK } from "joy-subscription-sdk/box";
 
 let sdk;
 
 onMounted(async () => {
   sdk = new BoxSDK({
     shopDomain: import.meta.env.VITE_SHOPIFY_DOMAIN,
-    storefrontAccessToken: import.meta.env.VITE_STOREFRONT_TOKEN
+    storefrontAccessToken: import.meta.env.VITE_STOREFRONT_TOKEN,
   });
 
   await sdk.initSubscriptionBox();
@@ -324,10 +327,13 @@ onBeforeUnmount(() => sdk?.destroySubscriptionBox());
 In headless mode, the box emits `avada:add-to-cart` instead of calling `/cart/add.js`. Make sure you're listening for this event:
 
 ```javascript
-sdk.on('add-to-cart', async data => {
-  await cartLinesAdd({cartId, lines: data.lines});
+sdk.on("add-to-cart", async (data) => {
+  await cartLinesAdd({ cartId, lines: data.lines });
   if (data.discountCodes.length > 0) {
-    await cartDiscountCodesUpdate({cartId, discountCodes: data.discountCodes});
+    await cartDiscountCodesUpdate({
+      cartId,
+      discountCodes: data.discountCodes,
+    });
   }
 });
 ```
