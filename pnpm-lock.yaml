@@ -21,8 +21,8 @@ importers:
         specifier: ^1.3.1
         version: 1.3.1(next@15.6.0-canary.60(react-dom@19.0.0(react@19.0.0))(react@19.0.0))
       joy-subscription-sdk:
-        specifier: ^1.0.5
-        version: 1.0.5
+        specifier: ^2.0.0
+        version: 2.0.0
       next:
         specifier: 15.6.0-canary.60
         version: 15.6.0-canary.60(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -512,8 +512,8 @@ packages:
     resolution: {integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==}
     hasBin: true
 
-  joy-subscription-sdk@1.0.5:
-    resolution: {integrity: sha512-NwM4vveuRjEgCQXDDOMBLqeEbvJJyQM0/Rjdj6N0rNwPDXwzrDl7FKI1Q28xm8czH+DJBp9fgrZiRBXqJfiNmw==}
+  joy-subscription-sdk@2.0.0:
+    resolution: {integrity: sha512-NtE7NYBDzjTLrb1YUrY7L1a4tDxqMhPwvyMrRqpT6vpvgTtdPp9oVNEoRJa80a6o5pBISptlQalmVSsu/nMefw==}
 
   lightningcss-darwin-arm64@1.29.2:
     resolution: {integrity: sha512-cK/eMabSViKn/PG8U/a7aCorpeKLMlK0bQeNHmdb7qUnBkNPnL+oV5DjJUo0kqWsJUapZsM4jCfYItbqBDvlcA==}
@@ -1106,7 +1106,7 @@ snapshots:
 
   jiti@2.4.2: {}
 
-  joy-subscription-sdk@1.0.5: {}
+  joy-subscription-sdk@2.0.0: {}
 
   lightningcss-darwin-arm64@1.29.2:
     optional: true
