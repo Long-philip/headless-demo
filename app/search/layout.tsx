@@ -9,7 +9,7 @@ export default function SearchLayout({
 }) {
   return (
     <>
-      <div className="mx-auto max-w-(--breakpoint-2xl) px-4 pb-4 text-black dark:text-white">
+      <div className="mx-auto max-w-(--breakpoint-2xl) px-4 pt-8 pb-4 text-black dark:text-white">
         <div className="min-h-screen w-full">
           <Suspense fallback={null}>
             <ChildrenWrapper>{children}</ChildrenWrapper>

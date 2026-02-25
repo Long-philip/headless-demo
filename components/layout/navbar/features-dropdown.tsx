@@ -4,7 +4,10 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 const features = [
-  { title: "Subscription Box", path: "/pages/subscription-box" },
+  {
+    title: "Subscription Box",
+    path: "/pages/subscription-box?boxId=4rmrAgnK48wqn6CcPqts",
+  },
   { title: "Product Bundle", path: "/search" },
   { title: "Cancellation Flow", path: "/search" },
   { title: "Analytics", path: "/search" },

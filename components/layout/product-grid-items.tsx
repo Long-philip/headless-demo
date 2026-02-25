@@ -186,18 +186,17 @@ export default function ProductGridItems({
 }: {
   products: Product[];
 }) {
-  // First 4 products (first row) get the featured treatment
-  const firstRowCount = 4;
-
   return (
     <>
-      {products.map((product, index) =>
-        index < firstRowCount ? (
+      {products.map((product) => {
+        const hasSubscription =
+          product.sellingPlanGroups && product.sellingPlanGroups.length > 0;
+        return hasSubscription ? (
           <FeaturedProductGridItem key={product.handle} product={product} />
         ) : (
           <ProductGridItem key={product.handle} product={product} />
-        )
-      )}
+        );
+      })}
     </>
   );
 }

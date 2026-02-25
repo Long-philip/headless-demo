@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { BoxSDK } from 'joy-subscription-sdk/box';
 import { addSubscriptionItems, applyDiscountCodes } from './cart-actions';
 
-export function SubscriptionBox() {
+export function SubscriptionBox({ boxId }: { boxId: string }) {
   const sdkRef = useRef<BoxSDK | null>(null);
 
   useEffect(() => {
@@ -22,13 +22,13 @@ export function SubscriptionBox() {
     });
 
     // @ts-expect-error boxId is supported at runtime but not in SDK types
-    sdk.initSubscriptionBox({ boxId: '5KGbH2BjqdUYBNXsuBDq' });
+    sdk.initSubscriptionBox({ boxId });
 
     return () => {
       unsubscribe();
       sdk.destroySubscriptionBox();
     };
-  }, []);
+  }, [boxId]);
 
   return <div className="Avada-SubscriptionBox__Wrapper" />;
 }

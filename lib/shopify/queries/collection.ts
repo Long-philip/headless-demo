@@ -60,3 +60,18 @@ export const getCollectionProductsQuery = /* GraphQL */ `
   }
   ${productFragment}
 `;
+
+export const getCollectionProductsByIdQuery = /* GraphQL */ `
+  query getCollectionProductsById($id: ID!) {
+    collection(id: $id) {
+      products(first: 100) {
+        edges {
+          node {
+            ...product
+          }
+        }
+      }
+    }
+  }
+  ${productFragment}
+`;

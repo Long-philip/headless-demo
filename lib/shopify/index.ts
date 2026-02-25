@@ -21,6 +21,7 @@ import {
 } from "./mutations/cart";
 import { getCartQuery } from "./queries/cart";
 import {
+  getCollectionProductsByIdQuery,
   getCollectionProductsQuery,
   getCollectionQuery,
   getCollectionsQuery,
@@ -47,6 +48,7 @@ import {
   ShopifyCartOperation,
   ShopifyCollection,
   ShopifyCollectionOperation,
+  ShopifyCollectionProductsByIdOperation,
   ShopifyCollectionProductsOperation,
   ShopifyCollectionsOperation,
   ShopifyCreateCartOperation,
@@ -359,6 +361,39 @@ export async function getCollectionProducts({
 
   if (!res.body.data.collection) {
     console.log(`No collection found for \`${collection}\``);
+    return [];
+  }
+
+  return reshapeProducts(
+    removeEdgesAndNodes(res.body.data.collection.products)
+  );
+}
+
+export async function getCollectionProductsById(
+  collectionId: string
+): Promise<Product[]> {
+  "use cache";
+  cacheTag(TAGS.collections, TAGS.products);
+  cacheLife("days");
+
+  if (!endpoint) {
+    console.log(
+      `Skipping getCollectionProductsById for '${collectionId}' - Shopify not configured`
+    );
+    return [];
+  }
+
+  const gid = collectionId.startsWith("gid://")
+    ? collectionId
+    : `gid://shopify/Collection/${collectionId}`;
+
+  const res = await shopifyFetch<ShopifyCollectionProductsByIdOperation>({
+    query: getCollectionProductsByIdQuery,
+    variables: { id: gid },
+  });
+
+  if (!res.body.data.collection) {
+    console.log(`No collection found for ID \`${collectionId}\``);
     return [];
   }
 
