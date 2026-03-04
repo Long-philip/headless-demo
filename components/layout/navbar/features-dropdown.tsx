@@ -8,7 +8,7 @@ const features = [
     title: "Subscription Box",
     path: "/pages/subscription-box?boxId=4rmrAgnK48wqn6CcPqts",
   },
-  { title: "Product Bundle", path: "/search" },
+  { title: "Product Bundle", path: "/pages/product-bundle?bundleId=JOFooGJYq9bxSsQNI8qd" },
   { title: "Cancellation Flow", path: "/search" },
   { title: "Analytics", path: "/search" },
   { title: "Forecasting Tool", path: "/search" },
